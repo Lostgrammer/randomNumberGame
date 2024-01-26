@@ -20,19 +20,22 @@ const checkUserTry= () =>{
             innerTextHtmlTags('p',`Felicidades, el numero escondido es ${randomNumber}`);
             console.log(`Lo hiciste en ${usertriesAmount} ${usertriesAmount===1?'intento':'intentos'}`);
             activateNewgameButton();
+            deactivateTryButton();
             return;
         }else{
-            innerTextHtmlTags('p',`No mijita, el numero escondido no es ${userNumberInput}`);
             if (userNumberInput > randomNumber) {
-                console.log(`El numero escondido es menor que ${userNumberInput}`);
+                innerTextHtmlTags('p',`No estimad@, el numero escondido no es ${userNumberInput}. El numero es menor`);
+                //console.log(`El numero escondido es menor que ${userNumberInput}`);
             } else {
-                console.log(`El numero escondido es mayor que ${userNumberInput}`);
+                innerTextHtmlTags('p',`No estimad@, el numero escondido no es ${userNumberInput}. El numero es mayor`);
+                //console.log(`El numero escondido es mayor que ${userNumberInput}`);
             }
             cleanerInputField();
             if (usertriesAmount === maxtriesAmount) {
                 console.log(`Ya usaste tu(s) ${maxtriesAmount} ${(maxtriesAmount===1)?'intento':'intentos'}`);
                 usertriesAmount++;
                 activateNewgameButton();
+                deactivateTryButton();
                 return;
             }else{
                 console.log(`==Solo tienes ${maxtriesAmount-usertriesAmount} ${(usertriesAmount===2)?'intento':'intentos'} mas==`);
@@ -47,14 +50,14 @@ const checkUserTry= () =>{
 //innerText to any html element
 function innerTextHtmlTags(tagElement,text){
     let selectTag = document.querySelector(tagElement);
-    console.log(`datatype de ${selectTag}: ${typeof(selectTag)}`);
+    //console.log(`datatype de ${selectTag}: ${typeof(selectTag)}`);
     selectTag.innerHTML = text;
     return;
 }
 //get a random number function, its a normal function because of "function"
 function randomNumberGenerator(limitNumber){
     let randomNumber = Math.floor(Math.random()*limitNumber)+1;
-    console.log(`==El numero a adivinar es: ${randomNumber}==`);
+    //console.log(`==El numero a adivinar es: ${randomNumber}==`);
     return randomNumber;
 }
 //cleaner input field
@@ -77,6 +80,10 @@ function deactivateNewgameButton() {
     document.getElementById('reiniciar').setAttribute('disabled', 'true');
     return;
 }
+function activateTryButton(){
+    document.getElementById('intentar').removeAttribute('disabled');
+    return;
+}
 //restart game
 function restartGameFunction() {
     usertriesAmount = 1;
@@ -86,6 +93,7 @@ function restartGameFunction() {
 }
 //setting the initial values of the app
 function setInitialInstructions() {
+    activateTryButton();
     innerTextHtmlTags('h1','Juego del numero escondido');
     innerTextHtmlTags('p',`Indica un numero del 1 al ${randomNumberMaxValue}`);
     randomNumber = uniqueRandomNumberChecker();
@@ -100,7 +108,7 @@ function uniqueRandomNumberChecker() {
     if(randomNumbersArray.length<randomNumberMaxValue){
         if (!foundSimilarRandomNumber) {
             randomNumbersArray.push(actualRandomNumber);
-            console.log(randomNumbersArray);
+            //console.log(randomNumbersArray);
             return actualRandomNumber;
         }else{
             return uniqueRandomNumberChecker();
